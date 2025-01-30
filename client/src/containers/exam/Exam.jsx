@@ -428,11 +428,11 @@ useEffect(() => {
             <h3>Please contact your organization/admin.</h3>
           </div>
 
-          <div className="responsive-message">
+          {/*<div className="responsive-message">
             <h1>
               Please join via a Laptop/PC for best performance
             </h1>
-          </div>
+          </div>*/}
         </div>
       </div>
 

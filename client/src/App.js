@@ -17,19 +17,19 @@ import Cookies from 'js-cookie';
 
 const App = () => {
   const isAuthenticated = !!Cookies.get('token'); 
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
-    // ✅ Update state on window resize
+    // Update state on window resize
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 1024);
+      setIsMobile(window.innerWidth < 768);
     };
 
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // ✅ If screen width is less than 1024px, show mobile message
+  // If screen width is less than 768px, show mobile message
   if (isMobile) {
     return (
       <div className="mobile-message">
