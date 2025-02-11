@@ -14,18 +14,18 @@ const Contact = () => {
     e.preventDefault();
 
     emailjs.sendForm(
-      "service_xykz366",
-      "template_ygs6164",
+      process.env.REACT_APP_EMAILJS_SERVICE_ID,
+      process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
       form.current,
-      "WGBjEmL40eBkfMdso"
+      process.env.REACT_APP_EMAILJS_PUBLIC_KEY
     )
     .then(
       () => {
-        setStatus("Message Sent Successfully!");
+        setStatus("Feedback Submitted Successfully!");
         form.current.reset();
       },
       () => {
-        setStatus("Failed to send message. Try again.");
+        setStatus("Failed to submit feedback. Try again.");
       }
     );
   };
