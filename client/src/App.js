@@ -8,6 +8,8 @@ import {
   Register,
   Status,
   Exam,
+  About,
+  Contact,
 } from './containers';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
@@ -48,6 +50,8 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/exam" element={<Exam />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
 
           {/* Protected routes */}
           <Route 

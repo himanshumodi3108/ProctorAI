@@ -8,13 +8,13 @@ const NavLinks = () => (
 			<Link to="/" >Home</Link>
 		</p>
 		<p>
-			About
+			<Link to="/about">About</Link>
 		</p>
 		<p>
 			Community
 		</p>
 		<p>
-			Contact Us
+			<Link to="/contact">Contact Us</Link>
 		</p>
 		<p>
 			<Link to="/login">Login</Link>

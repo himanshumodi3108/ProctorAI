@@ -1,0 +1,196 @@
+/* General Styling */
+.contact-container {
+    background: var(--gradient-bg);
+    font-family: var(--font-family);
+    min-height: 100vh;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .contact-content {
+    width: 100%;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+  
+  /* Team Section */
+  .team-section {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  .team-subtitle {
+    color: #007bff;
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+  
+  .team-title {
+    font-size: 2.5rem;
+    color: #222;
+    margin: 10px 0;
+  }
+  
+  .team-description {
+    font-size: 1rem;
+    color: #777;
+    max-width: 600px;
+    margin: 0 auto 20px;
+  }
+  
+  /* Team Grid */
+  .team-grid {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+  }
+  
+  /* Team Card */
+  .team-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+    width: 250px;
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .team-card:hover {
+    transform: scale(1.05);
+  }
+  
+  .team-card img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+  }
+  
+  .team-card h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 5px;
+  }
+  
+  .team-card p {
+    font-size: 1rem;
+    color: #777;
+  }
+  
+  /* Social Links */
+  .social-links {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+  }
+  
+  .social-links a {
+    text-decoration: none;
+    font-size: 1.4rem;
+    color: #333;
+    transition: color 0.2s ease-in-out;
+  }
+  
+  .social-links a:hover {
+    color: #007bff;
+  }
+  
+  /* Contact Form */
+.form-section {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    width: 80%;
+    max-width: 500px;
+    text-align: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+    margin-top: 50px;
+}
+
+.form-section h2 {
+    text-align: center;
+    font-size: 2rem;
+    color: #222;
+    margin-bottom: 20px;
+}
+
+.form-section form {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+/* Fix label position */
+.form-section label {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #000000;
+    display: block;
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+/* Input fields */
+.form-section input,
+.form-section textarea {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 100%;
+    margin-bottom: 15px;
+    background: #fff;
+    color: #333;
+}
+
+/* Submit Button */
+/* Button Wrapper to Center the Button */
+.button-container {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Align vertically */
+    width: 100%;
+}
+
+/* Submit Button */
+.form-section button {
+    background: linear-gradient(to bottom, #ffffff, #e0e0e0); /* Gradient effect */
+    color: #007bff;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 12px 20px;
+    border: 1px solid #007bff;
+    border-radius: 30px; /* Rounded button */
+    cursor: pointer;
+    width: 40%;
+    box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2); /* Soft shadow effect */
+    transition: all 0.3s ease-in-out;
+    text-align: center;
+}
+
+/* Hover Effect */
+.form-section button:hover {
+    background: linear-gradient(to bottom, #e0e0e0, #ffffff);
+    color: #0056b3;
+    border-color: #0056b3;
+    box-shadow: 3px 6px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Active Click Effect */
+.form-section button:active {
+    transform: scale(0.95); /* Slight shrink effect on click */
+}
+
+/* Status Message */
+.status-message {
+    margin-top: 15px;
+    font-size: 1rem;
+    color: green;
+}
