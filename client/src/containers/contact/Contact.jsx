@@ -2,9 +2,9 @@ import React, { useRef, useState } from "react";
 import emailjs from "@emailjs/browser";
 import "./contact.css";
 import Navbar from "../../components/navbar/Navbar"; 
-import team1 from "../../assets/logo.png"; 
-import team2 from "../../assets/logo.png";
-import team3 from "../../assets/logo.png";
+import team1 from "../../assets/team1.png"; 
+import team2 from "../../assets/profile.png";
+import team3 from "../../assets/profile.png";
 
 const Contact = () => {
   const form = useRef();
@@ -47,13 +47,13 @@ const Contact = () => {
               <h3>Himanshu Kumar Modi</h3>
               {/* <p>Marketing Expert</p> */}
               <div className="social-links">
-                <a href="https://github.com/melissa" target="_blank" rel="noopener noreferrer">
+                <a href="https://github.com/himanshumodi3108/" target="_blank" rel="noopener noreferrer">
                   <i className="fab fa-github"></i>
                 </a>
-                <a href="https://linkedin.com/in/melissa" target="_blank" rel="noopener noreferrer">
+                <a href="https://www.linkedin.com/in/himanshu-kumar-modi-063b88239/" target="_blank" rel="noopener noreferrer">
                   <i className="fab fa-linkedin"></i>
                 </a>
-                <a href="https://instagram.com/melissa" target="_blank" rel="noopener noreferrer">
+                <a href="https://www.instagram.com/modi4520/" target="_blank" rel="noopener noreferrer">
                   <i className="fab fa-instagram"></i>
                 </a>
               </div>
@@ -64,13 +64,13 @@ const Contact = () => {
               <h3>Piyush Kumar</h3>
               {/* <p>Digital Marketer</p> */}
               <div className="social-links">
-                <a href="https://github.com/stuard" target="_blank" rel="noopener noreferrer">
+                <a href="#" target="_blank" rel="noopener noreferrer">
                   <i className="fab fa-github"></i>
                 </a>
-                <a href="https://linkedin.com/in/stuard" target="_blank" rel="noopener noreferrer">
+                <a href="#" target="_blank" rel="noopener noreferrer">
                   <i className="fab fa-linkedin"></i>
                 </a>
-                <a href="https://instagram.com/stuard" target="_blank" rel="noopener noreferrer">
+                <a href="#" target="_blank" rel="noopener noreferrer">
                   <i className="fab fa-instagram"></i>
                 </a>
               </div>
@@ -81,13 +81,13 @@ const Contact = () => {
               <h3>Piyush Padia</h3>
               {/* <p>Creative Designer</p> */}
               <div className="social-links">
-                <a href="https://github.com/eva" target="_blank" rel="noopener noreferrer">
+                <a href="#" target="_blank" rel="noopener noreferrer">
                   <i className="fab fa-github"></i>
                 </a>
-                <a href="https://linkedin.com/in/eva" target="_blank" rel="noopener noreferrer">
+                <a href="#" target="_blank" rel="noopener noreferrer">
                   <i className="fab fa-linkedin"></i>
                 </a>
-                <a href="https://instagram.com/eva" target="_blank" rel="noopener noreferrer">
+                <a href="#" target="_blank" rel="noopener noreferrer">
                   <i className="fab fa-instagram"></i>
                 </a>
               </div>
