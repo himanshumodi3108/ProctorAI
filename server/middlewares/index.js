@@ -1,6 +1,10 @@
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
 
-const JWT_SECRET_KEY = "mySuperSecretKey12345"; 
+// const JWT_SECRET_KEY = "key"; 
+
+require('dotenv').config();
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 const requireSignIn = (req, res, next) => {
     const token = req.cookies.token; 

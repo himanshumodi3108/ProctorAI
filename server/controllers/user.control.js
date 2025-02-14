@@ -1,44 +1,51 @@
 const bcrypt = require('bcrypt');  
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
+const OTP = require('../models/otp.model'); // ✅ Import OTP Model
 
 const register = async (req, res) => {
+    const { email, fullName, password, otp } = req.body;
 
-    const { email, fullName, password } = req.body;
+    console.log("Processing Registration for:", email);
 
     if (!email || !fullName || !password) {
-      return res.status(400).json({ message: 'Email, Full Name, and Password are required.' });
+        console.log("❌ Error: Missing required fields.");
+        return res.status(400).json({ message: "Email, Full Name, and Password are required." });
     }
 
     try {
-      const existingUser = await User.findOne({ email });
-      if (existingUser) {
-        return res.status(400).json({ message: 'User with this email already exists' });
-      }
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            console.log("❌ Error: User already exists.");
+            return res.status(400).json({ message: "User with this email already exists" });
+        }
 
-      const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const user = new User({
+            email,
+            fullName,
+            hash_password: hashedPassword, 
+        });
 
-      const user = new User({
-        email,
-        fullName,
-        hash_password: hashedPassword, 
-      });
+        await user.save();
+        console.log("✅ User Registered Successfully!");
 
-      await user.save();
-      res.status(200).json({ message: 'Registration successful' });
+        res.status(200).json({ message: 'Registration successful' });
     } catch (error) {
-      console.error('Error during registration:', error); 
-      res.status(500).json({ message: 'Internal server error' });
+        console.error('❌ Error during registration:', error);
+        res.status(500).json({ message: 'Internal server error' });
     }
 };
 
-const JWT_SECRET_KEY = "mySuperSecretKey12345";
+
+require('dotenv').config();
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 const signIn = (req, res) => {
     User.findOne({ email: req.body.email })
         .exec((error, user) => {
             if (error) {
-                return res.status(400).json({ msg: "Bad luck! Must be internal error or you messed up", error });
+                return res.status(400).json({ msg: "Internal error", error });
             }
             if (user) {
                 if (user.authenticate(req.body.password)) {

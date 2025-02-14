@@ -1,4 +1,4 @@
-.user-register .logo img {
+/* .user-register .logo img {
 	width: 8rem;
 }
 
@@ -16,7 +16,7 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	gap: 2em;
+	gap: 2rem;
 }
 
 .register-form .input-fields {
@@ -26,7 +26,7 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	gap: 1.2em;
+	gap: 1.2rem;
 }
 
 .input-fields input {
@@ -79,4 +79,660 @@
 	z-index: 10;
 	height: 200px;
 	position: absolute;
+}
+
+/* Style for the OTP Verified message */
+/*.otp-verified-msg {
+    text-align: center;
+    font-size: 14px;
+    color: green;
+    margin-top: 5px;
+    font-weight: bold;
+}
+
+/* Style for the email input after OTP verification */
+/*.email-verified-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: "Poppins", sans-serif;
+    outline: none;
+    background-color: #f3f3f3;
+    cursor: not-allowed;
+}
+
+/* Style for Send OTP / Resend OTP buttons */
+/*.send-otp-btn {
+    width: 22%;
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 0;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.resend-otp-btn {
+    width: 22%;
+    background-color: orange;
+    color: black;
+    padding: 10px 0;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.disabled-btn {
+    background-color: gray;
+    cursor: not-allowed;
+}
+
+/* Aligns input fields and buttons in a row */
+/*.input-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px; 
+    width: 100%;
+}*/
+
+/* Ensures input fields take 75% of the width */
+/*.input-row input {
+    width: 75%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: "Poppins", sans-serif;
+    outline: none;
+}
+
+/* Ensures buttons take 22% width */
+/*.input-row button {
+    width: 22%;
+    padding: 10px 0;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+}
+
+/* Styling for Verify OTP button */
+/*.verify-otp-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+/* Disabled button style */
+/*.disabled-btn {
+    background-color: gray;
+    cursor: not-allowed;
+}
+ */
+/*
+.user-register .logo img {
+	width: 8em;
+}
+
+/* 🔹 General Styles */
+/*.user-register {
+	font-weight: bolder;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2em;
+    margin: 1.5em;
+}
+
+/* 🔹 Title Styling */
+/*.user-register .title-heading {
+    margin-top: 70px;
+	font-size: 2rem;
+    font-family: "Poppins", sans-serif;
+    font-weight: bold;
+    text-decoration: underline;
+    text-align: center;
+}
+
+/* 🔹 Form Container */
+/*.user-register .register-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+	gap: 2em;
+    padding: 35px;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    width: 600px;
+	height: fit-content;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+    background-color: white;
+}
+
+/* 🔹 Input Fields */
+/*.register-form .input-fields {
+    max-width: 40vw;
+    min-width: 30vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.2rem;
+}
+
+/* 🔹 Input Styling */
+/*.input-fields input {
+    padding: 0.9rem 1.8rem;
+    font-size: 1rem;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-family: "Poppins", sans-serif;
+    outline: none;
+}
+
+.image-capture button {
+	color: #5880f0;
+	background-color: #fff;
+	font-family: Inter;
+	font-size: 1rem;
+	font-weight: 600;
+	border: none;
+	padding: 1rem 2.75rem;
+	border-radius: 0.9rem;
+	box-shadow: 10px 9px 40px 7px rgba(177, 202, 255, 0.21);
+	-webkit-box-shadow: 10px 9px 40px 7px rgba(177, 202, 255, 0.21);
+	-moz-box-shadow: 10px 9px 40px 7px rgba(177, 202, 255, 0.21);
+}
+
+.image-capture .captured {
+	margin: 4rem 0;
+}
+
+.image-capture {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.image-capture .proceed {
+	margin: 5rem 0 0;
+}
+
+.image-capture img {
+	z-index: 10;
+	height: 200px;
+	position: absolute;
+}
+
+.image-capture .captured {
+	z-index: 10;
+	height: 250px;
+	position: absolute;
+}
+
+.image-capture img {
+	z-index: 10;
+	height: 200px;
+	position: absolute;
+}
+
+/* 🔹 Disabled Input (Email After OTP Verification) */
+/*.email-verified-input {
+    background-color: #f3f3f3;
+    cursor: not-allowed;
+}
+
+/* 🔹 Aligning OTP Input and Buttons in a Row */
+/*.input-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+/* 🔹 OTP Input Field */
+/*.input-row input {
+    width: 75%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: "Poppins", sans-serif;
+    outline: none;
+}
+
+/* 🔹 Buttons for Send OTP / Resend OTP / Verify OTP */
+/*.otp-btn {
+    width: 22%;
+    padding: 10px 0;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+}
+
+/* 🔹 Send OTP Button */
+/*.send-otp-btn {
+    background-color: #007BFF;
+    color: white;
+}*/
+
+/* 🔹 Resend OTP Button */
+/*.resend-otp-btn {
+    background-color: orange;
+    color: black;
+}*/
+
+/* 🔹 Verify OTP Button */
+/*.verify-otp-btn {
+    background-color: #28a745;
+    color: white;
+}*/
+
+/* 🔹 Disabled Button */
+/*.disabled-btn {
+    background-color: gray !important;
+    cursor: not-allowed !important;
+}
+
+/* 🔹 OTP Verified Message */
+/*.otp-verified-msg {
+    text-align: center;
+    font-size: 14px;
+    color: green;
+    margin-top: 5px;
+    font-weight: bold;
+}
+
+/* 🔹 Password Input */
+/*.input-group input {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: "Poppins", sans-serif;
+    outline: none;
+    width: 100%;
+}
+
+/* 🔹 Register Button */
+/*.register-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    font-family: "Poppins", sans-serif;
+    background-color: #007BFF;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.register-btn:hover {
+    background-color: #0056b3;
+}
+
+/* 🔹 Error Message */
+/*.error-msg {
+    color: red;
+    margin-top: 10px;
+    text-align: center;
+    font-size: 14px;
+}*/
+
+/* 🔹 Responsive Design */
+/*@media screen and (max-width: 768px) {
+    .user-register {
+        font-weight: bolder;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2em;
+        margin: 1.5em;
+    }
+    
+    /* 🔹 Title Styling */
+    /*.user-register .title-heading {
+        margin-top: 70px;
+        font-size: 2rem;
+        font-family: "Poppins", sans-serif;
+        font-weight: bold;
+        text-decoration: underline;
+        text-align: center;
+    }
+    .user-register .register-form {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .register-form .input-fields {
+        max-width: 100%;
+        min-width: 100%;
+    }
+
+    .input-row {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .otp-btn {
+        width: 100%;
+    }
+}
+
+/* 🔹 Password Input Container */
+/*.password-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+/* 🔹 Password Input Field */
+/*.password-container input {
+    width: 100%;
+    padding: 12px;
+    padding-right: 40px; /* ✅ Prevents overlap with icon */
+    /*border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: "Poppins", sans-serif;
+    outline: none;
+}
+
+/* 🔹 Show/Hide Password Button */
+/*.toggle-password {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: #333;
+}
+
+/* ✅ Fix for unwanted duplicate icons */
+/*.toggle-password:focus {
+    outline: none;
+}*/
+
+/* 🔹 Button Hover Effect */
+/*.cta-button {
+    transition: all 0.3s ease-in-out;
+}*/
+
+/*.cta-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+}*/
+
+/* 🔹 Input Field Focus Effect */
+/*.input-group input:focus, .password-container input:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}*/
+
+/* 🔹 Smooth Fade-In for OTP Verified Message */
+/*.otp-verified-msg {
+    text-align: center;
+    font-size: 14px;
+    color: green;
+    margin-top: 5px;
+    font-weight: bold;
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 🔹 Eye Icon Hover Effect */
+/*.toggle-password {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: #333;
+    transition: color 0.3s ease-in-out;
+}
+
+.toggle-password:hover {
+    color: #007BFF;
+}
+
+/* 🔹 Disabled Button Style */
+/*.cta-button:disabled {
+    background-color: gray;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+
+/* 🔹 General Styles */
+.user-register {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2em;
+    margin: 1.5em;
+}
+
+.user-register .title-heading {
+    margin-top: 100px;
+	font-size: 2rem;
+    font-family: "Poppins", sans-serif;
+    /* font-weight: bolder; */
+    text-decoration: underline;
+    text-align: center;
+}
+
+/* 🔹 Register Form Styling */
+.register-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 35px;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    width: 60%;
+    max-width: 600px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+    background-color: white;
+}
+
+/* 🔹 Full Width Inputs */
+.input-group {
+    margin-bottom: 15px;
+    position: relative;
+    margin-right: 10px;
+}
+
+.input-row {
+    margin-bottom: 15px;
+    position: relative;
+    margin-right: 10px;
+}
+
+.input-group input,
+.input-col input,
+.input-row input {
+    flex: 1;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: "Poppins", sans-serif;
+    outline: none;
+    box-sizing: border-box;
+    transition: 0.3s ease-in-out;
+}
+
+/* 🔹 Input Field Focus Effect */
+.input-group input:focus,
+.input-row input:focus
+.password-container input:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+}
+
+/* 🔹 Send OTP / Resend OTP Button */
+.otp-btn {
+    padding: 1.5rem 1.5rem;
+    margin-left: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+/* 🔹 Disable Button While Timer is Running */
+.disabled-btn {
+    background-color: gray !important;
+    cursor: not-allowed !important;
+}
+
+/* 🔹 OTP Verified Message */
+.otp-verified-msg {
+    text-align: center;
+    font-size: 14px;
+    color: green;
+    margin-top: 5px;
+    font-weight: bold;
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in forwards;
+}
+
+/* 🔹 OTP Verified Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 🔹 Password Input Container */
+.password-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 140%;
+}
+
+/* 🔹 Password Input Field */
+.password-container input {
+    width: 100%;
+    padding: 12px;
+    padding-right: 40px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: "Poppins", sans-serif;
+    outline: none;
+}
+
+/* 🔹 Show/Hide Password Button */
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: #333;
+    transition: color 0.3s ease-in-out;
+}
+
+.toggle-password:hover {
+    color: #007BFF;
+}
+
+/* 🔹 Button Hover Effect */
+.cta-button {
+    transition: all 0.3s ease-in-out;
+    /* align-items: center; */
+}
+
+.otp-btn {
+    width: 80%;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    font-family: "Poppins", sans-serif;
+    transition: all 0.3s ease-in-out;
+}
+
+.resend-otp-btn {
+    width: 80%;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    font-family: "Poppins", sans-serif;
+    transition: all 0.3s ease-in-out;
+}
+
+.otp-verified-msg {
+    text-align: center;
+    font-size: 14px;
+    color: green;
+    margin-top: -20px;
+    font-weight: bold;
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in forwards;
+}
+
+.cta-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* 🔹 Responsive Design */
+@media screen and (max-width: 768px) {
+    .register-form {
+        width: 95%;
+    }
+
+    .input-group input,
+    .input-row input {
+        font-size: 0.9rem;
+    }
+
+    .otp-btn {
+        font-size: 0.9rem;
+        padding: 0.8rem 1.2rem;
+    }
+
+    .password-container input {
+        padding-right: 35px;
+    }
+
+    .toggle-password {
+        right: 8px;
+        font-size: 16px;
+    }
 }

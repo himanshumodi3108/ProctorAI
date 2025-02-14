@@ -64,10 +64,48 @@
 }
 
 .custom-datepicker {
-    width: 490px;
-	position: relative;
-	bottom: 10px;
-  
+    max-width: 40vw;
+	min-width: 30vw;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 1.2em;
+	padding: 0.9rem 1.8rem;
+	font-size: 1rem;
+}
+
+/* 🔹 Location Selection - Fix Alignment */
+.location-selection {
+    margin-top: 15px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.location-selection p {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.location-options {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Add spacing between options */
+}
+
+.location-options label {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.location-options input {
+    margin-right: 8px;
+    transform: scale(1.2); /* Make radio button slightly bigger */
 }
 
 

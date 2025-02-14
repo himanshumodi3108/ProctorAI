@@ -28,6 +28,7 @@ const Create = () => {
         totalCandidates: '',
         duration: '',
         startTime: '',
+        testLocation: 'classroom', // Default selection
     });
     const [errorMessage, setErrorMessage] = useState(''); 
     const [showErrorModal, setShowErrorModal] = useState(false); 
@@ -46,6 +47,10 @@ const Create = () => {
 
     const handleDateChange = (date) => {
         setFormData({ ...formData, startTime: format(date, 'dd/MM/yyyy HH:mm') });
+    };
+
+    const handleLocationChange = (event) => {
+        setFormData({ ...formData, testLocation: event.target.value });
     };
 
     const handleSubmit = async (event) => {
@@ -84,8 +89,11 @@ const Create = () => {
             start_time: startTime.toISOString(), 
             end_time: endTime.toISOString(), 
             no_of_candidates_appear: formData.totalCandidates,
-            total_threshold_warnings: 3 
+            total_threshold_warnings: formData.testLocation === 'classroom' ? 3 : 3, // ✅ All warnings except "Multiple People" are counted
+            test_location: formData.testLocation,
+            disableMultiplePeopleWarning: formData.testLocation === 'classroom'  // ✅ Only "Multiple People Warning" is disabled
         };
+        
 
         try {
             const response = await axios.post('http://localhost:3000/api/create-test', formattedData, {
@@ -120,13 +128,13 @@ const Create = () => {
                         <CommonInput
                             key={index}
                             placeholderText={item}
+                            required
                             onChange={(e) => handleChange(index, e.target.value)}
                         />
                     ))}
 
                 </div>
                 <DatePicker
-
                     selected={formData.startTime ? parse(formData.startTime, 'dd/MM/yyyy HH:mm', new Date()) : null}
                     onChange={handleDateChange}
                     showTimeSelect
@@ -135,8 +143,39 @@ const Create = () => {
                     placeholderText="Start Date-Time (DD/MM/YYYY HH:MM)"
                     minDate={new Date()}
                     className="custom-datepicker"
+                    style={{ position: 'relative', left: '30px', width: '140%' }}
                 />
-                <div style={{ position: "relative", bottom: "20px", right: "20px" }}><CtaButton text="Create" onClick={handleSubmit} /></div>
+
+                {/* 🔹 New Radio Button for Test Location */}
+                {/* Test Location Selection */}
+                <div className="location-selection">
+                    <p>Where will the test be conducted?</p>
+                    <div className="location-options">
+                        <label>
+                            <input
+                                type="radio"
+                                value="classroom"
+                                checked={formData.testLocation === 'classroom'}
+                                onChange={handleLocationChange}
+                            /> 
+                            Classroom
+                        </label>
+                        <label>
+                            <input
+                                type="radio"
+                                value="own-location"
+                                checked={formData.testLocation === 'own-location'}
+                                onChange={handleLocationChange}
+                            /> 
+                            Student's Own Location
+                        </label>
+                    </div>
+                </div>
+
+
+                <div style={{ position: "relative", bottom: "20px", right: "20px" }}>
+                    <CtaButton text="Create" onClick={handleSubmit} />
+                </div>
             </div>
 
             {showErrorModal && (
