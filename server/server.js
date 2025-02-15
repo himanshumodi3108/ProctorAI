@@ -71,6 +71,10 @@ const testTakerSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  totalWarningCount: { 
+    type: Number, 
+    default: 0 
+  }
 });
 
 // Remove unique index from MongoDB (if previously set)
@@ -149,6 +153,27 @@ app.get("/api/test-takers", async (req, res) => {
 });
 
 // API to fetch test taker's data
+// app.get("/api/test-taker/:testCode/:registrationNumber", async (req, res) => {
+//   try {
+//     const { testCode, registrationNumber } = req.params;
+
+//     // Find the test taker by testCode and registrationNumber
+//     const testTaker = await TestTaker.findOne({ testCode, registrationNumber });
+
+//     if (!testTaker) {
+//       return res.status(404).json({ message: "Test taker not found" });
+//     }
+
+//     // Return the test taker's data including warningCount
+//     res.status(200).json(testTaker);
+//   } catch (error) {
+//     console.error("Error fetching test taker data:", error);
+//     res
+//       .status(500)
+//       .json({ message: "Internal server error", error: error.message });
+//   }
+// });
+
 app.get("/api/test-taker/:testCode/:registrationNumber", async (req, res) => {
   try {
     const { testCode, registrationNumber } = req.params;
@@ -160,15 +185,32 @@ app.get("/api/test-taker/:testCode/:registrationNumber", async (req, res) => {
       return res.status(404).json({ message: "Test taker not found" });
     }
 
-    // Return the test taker's data including warningCount
-    res.status(200).json(testTaker);
+    // Fetch `disableMultiplePeopleWarning` from the Test collection
+    // const test = await Test.findOne({ test_code: testCode }).select("test_location disableMultiplePeopleWarning");
+
+    const test = await Test.findOne(
+      { test_code: testCode },
+      { test_location: 1, disableMultiplePeopleWarning: 1, _id: 0 }
+    );
+
+    if (!test) {
+      return res.status(404).json({ message: "Test details not found" });
+    }
+
+    // Include disableMultiplePeopleWarning in the response
+    const responseData = {
+      ...testTaker.toObject(), // Convert Mongoose document to JS object
+      test_location: test.test_location,
+      disableMultiplePeopleWarning: test.disableMultiplePeopleWarning || false, // Ensure it defaults to false if undefined
+    };
+
+    res.status(200).json(responseData);
   } catch (error) {
     console.error("Error fetching test taker data:", error);
-    res
-      .status(500)
-      .json({ message: "Internal server error", error: error.message });
+    res.status(500).json({ message: "Internal server error", error: error.message });
   }
 });
+
 
 // API to update the warningCount for a test taker
 app.put(
@@ -190,6 +232,9 @@ app.put(
 
       // Update the warningCount
       testTaker.warningCount = warningCount;
+
+      // Increment the totalWarningCount
+      testTaker.totalWarningCount++;
 
       // Save the updated test taker
       await testTaker.save();

@@ -34,25 +34,53 @@ const Exam = ({ examName = '', formLink = '' }) => {
 
   const [peopleCount, setPeopleCount] = useState(0);
   const [phoneCount, setPhoneCount] = useState(0);
+  const [disableMultiplePeopleWarning, setDisableMultiplePeopleWarning] = useState(false);
 
 
+  // const fetchExamDetails = async () => {
+  //   try {
+  //     const response = await axios.get(`http://localhost:5000/api/test-taker/${test_code}/${registration_number}`);
+  //     const examData1 = response.data;
+  //     if (examData1) {
+  //       setDetails(examData1);
+  //       setWarningCnt(examData1.warningCount);
+
+  //       if (examData1.warningCount > 3) {
+  //         terminateexam();
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching test details:', error);
+  //   }
+  // };
+
+  
   const fetchExamDetails = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/test-taker/${test_code}/${registration_number}`);
-      const examData1 = response.data;
-      if (examData1) {
-        setDetails(examData1);
-        setWarningCnt(examData1.warningCount);
+        const response = await axios.get(`http://localhost:5000/api/test-taker/${test_code}/${registration_number}`);
+        console.log("🔹 Full Test Details Response:", response.data);
 
-        if (examData1.warningCount > 3) {
-          terminateexam();
+        if (response.data) {
+            setDetails(response.data);
+            setWarningCnt(response.data.warningCount);
+
+            if (response.data.hasOwnProperty("disableMultiplePeopleWarning")) {
+                console.log("✅ disableMultiplePeopleWarning received:", response.data.disableMultiplePeopleWarning);
+                setDisableMultiplePeopleWarning(response.data.disableMultiplePeopleWarning);
+            } else {
+                console.error("❌ disableMultiplePeopleWarning is missing from API response");
+            }
+
+            if (response.data.warningCount > 3) {
+                terminateExam();
+            }
         }
-      }
     } catch (error) {
-      console.error('Error fetching test details:', error);
+        console.error('❌ Error fetching test details:', error);
     }
-  };
+};
 
+  
   useEffect(() => {
     if (test_code && registration_number) {
       fetchExamDetails();
@@ -78,6 +106,10 @@ const Exam = ({ examName = '', formLink = '' }) => {
     }
 };
 
+
+//const prevWarningCntRef = useRef(warningCnt);
+//If warningCnt doesn't change, don't trigger an update.
+//Use a ref to track the previous warningCnt
 useEffect(() => {
     const updateWarningCount = async () => {
         if (warningCnt > 0) {  // Ensure warning count is valid before sending
@@ -86,6 +118,7 @@ useEffect(() => {
                     `http://localhost:5000/api/test-taker/${test_code}/${registration_number}/warningCount`,
                     { warningCount: warningCnt }
                 );
+                //prevWarningCntRef.current = warningCnt; // Update previous value
             } catch (error) {
                 console.error('Error updating warning count:', error);
             }
@@ -127,7 +160,6 @@ useEffect(() => {
       setShowMessage('Warning : Your exam will terminate. Please enable full-screen mode by clicking the full-screen button in the top-right corner.');
       disableForm();
 
-
     } else if (document.fullscreenElement && !isTerminated) {
       setIsFullScreen(true);
       enableForm();
@@ -159,27 +191,56 @@ useEffect(() => {
     }
   };
 
+  // useEffect(() => {
+  //   if (peopleCount > 1) {
+  //     setShowMessage('Warning: Multiple people detected. Your exam will be terminated if this is not addressed.');
+  //     disableForm();
+  //     incrementWarningCount(); 
+  //   } else if (peopleCount === 0) {
+  //     setShowMessage('Warning: Your face is not visible. Your exam will be terminated if this is not addressed.');
+  //     disableForm();
+  //     incrementWarningCount();
+  //   } else if (peopleCount === 1) {
+  //     setShowMessage(''); 
+  //     enableForm();
+  //   }
+  //   if (phoneCount > 0) {
+  //     setShowMessage('Warning: Mobile phone detected. Your exam will be terminated if this is not addressed.');
+  //     disableForm();
+  //     setShowMessage('Warning: Mobile phone detected. Your exam will be terminated if this is not addressed.');
+  //     disableForm();
+  //     incrementWarningCount();
+  //   }
+  // }, [peopleCount, phoneCount]);
+
+
   useEffect(() => {
-    if (peopleCount > 1) {
+    console.log(`👀 People Count: ${peopleCount} 📱 Phone Count: ${phoneCount} 🚫 disableMultiplePeopleWarning: ${disableMultiplePeopleWarning}`);
+
+    if (!disableMultiplePeopleWarning && peopleCount > 1) {
+      console.log("🚨 Warning: Multiple people detected!");
       setShowMessage('Warning: Multiple people detected. Your exam will be terminated if this is not addressed.');
       disableForm();
-      incrementWarningCount(); 
+      incrementWarningCount();
+      
     } else if (peopleCount === 0) {
       setShowMessage('Warning: Your face is not visible. Your exam will be terminated if this is not addressed.');
       disableForm();
       incrementWarningCount();
-    } else if (peopleCount === 1) {
-      setShowMessage(''); 
-      enableForm();
+      
+    } else {
+        setShowMessage('');
+        enableForm();
     }
+
     if (phoneCount > 0) {
-      setShowMessage('Warning: Mobile phone detected. Your exam will be terminated if this is not addressed.');
-      disableForm();
-      setShowMessage('Warning: Mobile phone detected. Your exam will be terminated if this is not addressed.');
-      disableForm();
-      incrementWarningCount();
+        setShowMessage('Warning: Mobile phone detected. Your exam will be terminated if this is not addressed.');
+        disableForm();
+        setShowMessage('Warning: Mobile phone detected. Your exam will be terminated if this is not addressed.');
+        disableForm();
+        incrementWarningCount();
     }
-  }, [peopleCount, phoneCount]);
+}, [peopleCount, phoneCount, disableMultiplePeopleWarning]);
 
 
   const handleCountsChange = (people, phones) => {
@@ -282,27 +343,26 @@ useEffect(() => {
   let timeoutId = null;
 
   document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'hidden' && !isTerminated) {
+      if (document.visibilityState === 'hidden' && !isTerminated) {
+          incrementWarningCount();
+          setShowMessage('Warning: You moved away from the exam window. Repeated actions will lead to termination.');
+          disableForm();
 
-      incrementWarningCount();
+      } else if (document.visibilityState === 'visible' && !isTerminated) {
+          setShowMessage('Warning : You moved away from the exam window. Repeated actions will lead to termination.');
+          disableForm();
+          
+          if (timeoutId) {
+              clearTimeout(timeoutId);
+          }
 
-      setShowMessage('Warning : You moved away from the exam window. Repeated actions will lead to termination.');
-      disableForm();
-
-    } else if (document.visibilityState === 'visible' && !isTerminated) {
-
-      setShowMessage('Warning : You moved away from the exam window. Repeated actions will lead to termination.');
-      disableForm();
-
-      if (timeoutId) {
-        clearTimeout(timeoutId);
+          timeoutId = setTimeout(() => {
+              enableForm();
+              //setShowMessage(''); // Clear the warning after form re-enables
+          }, 3000);
       }
-
-      timeoutId = setTimeout(() => {
-        enableForm();
-      }, 3000);
-    }
   });
+
 
 
   const terminateExam = () => {
@@ -428,11 +488,11 @@ useEffect(() => {
             <h3>Please contact your organization/admin.</h3>
           </div>
 
-          {/*<div className="responsive-message">
+          <div className="responsive-message">
             <h1>
               Please join via a Laptop/PC for best performance
             </h1>
-          </div>*/}
+          </div>
         </div>
       </div>
 

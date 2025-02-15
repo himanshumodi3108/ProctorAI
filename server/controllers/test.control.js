@@ -2,66 +2,101 @@ const Test = require('../models/test');
 const User = require('../models/user');
 const shortid = require('shortid');
 
-const createTest = (req, res) => {
-    const { 
-        email, 
-        test_name, 
-        test_link_by_user, 
-        start_time, 
-        end_time, 
-        no_of_candidates_appear, 
-        test_location 
-    } = req.body;
+// const createTest = (req, res) => {
+//     const { 
+//         email, 
+//         test_name, 
+//         test_link_by_user, 
+//         start_time, 
+//         end_time, 
+//         no_of_candidates_appear, 
+//         test_location 
+//     } = req.body;
 
-    // ✅ Ensure `test_location` is provided
-    if (!test_location) {
-        console.error("❌ Missing test_location in request");
-        return res.status(400).json({ msg: "test_location is required" });
-    }
+//     // ✅ Ensure `test_location` is provided
+//     if (!test_location) {
+//         console.error("❌ Missing test_location in request");
+//         return res.status(400).json({ msg: "test_location is required" });
+//     }
 
-    console.log("✅ Received test_location:", test_location);
+//     console.log("✅ Received test_location:", test_location);
 
-    if (!email || !test_name || !test_link_by_user || !start_time || !end_time || !no_of_candidates_appear) {
-        return res.status(400).json({ msg: "Missing required fields" });
-    }
+//     if (!email || !test_name || !test_link_by_user || !start_time || !end_time || !no_of_candidates_appear) {
+//         return res.status(400).json({ msg: "Missing required fields" });
+//     }
 
-    let startTime, endTime;
+//     let startTime, endTime;
+//     try {
+//         startTime = new Date(start_time);
+//         endTime = new Date(end_time);
+//         if (isNaN(startTime) || isNaN(endTime)) {
+//             throw new Error('Invalid date format');
+//         }
+//     } catch (err) {
+//         return res.status(400).json({ msg: "Invalid date format", error: err.message });
+//     }
+
+//     if (!req.user || !req.user.id) {
+//         return res.status(401).json({ msg: "Unauthorized access" });
+//     }
+
+//     try {
+//         const test = new Test({
+//             userId: req.user.id, 
+//             email,
+//             test_name,
+//             test_link_by_user,
+//             test_code: shortid.generate() + "-" + shortid.generate(),
+//             start_time: startTime,
+//             end_time: endTime,
+//             no_of_candidates_appear,
+//             test_location,
+//             total_threshold_warnings: 3,  // ✅ Keep total warnings at 3
+//             disableMultiplePeopleWarning: test_location === 'classroom'  // ✅ Disable "Multiple People" Warning in Classroom mode
+//         });
+
+//         test.save((error, data) => {
+//             if (error) {
+//                 return res.status(500).json({ msg: "Something went wrong while creating new test", error });
+//             }
+//             return res.status(201).json({ msg: "Successfully created new Test on platform", data });
+//         });
+//     } catch (err) {
+//         return res.status(500).json({ msg: "Server error", error: err });
+//     }
+// };
+
+
+const createTest = async (req, res) => {
     try {
-        startTime = new Date(start_time);
-        endTime = new Date(end_time);
-        if (isNaN(startTime) || isNaN(endTime)) {
-            throw new Error('Invalid date format');
+        const { email, test_name, test_link_by_user, start_time, end_time, no_of_candidates_appear, test_location } = req.body;
+
+        if (!email || !test_name || !test_link_by_user || !start_time || !end_time || !no_of_candidates_appear || !test_location) {
+            return res.status(400).json({ msg: "Missing required fields" });
         }
-    } catch (err) {
-        return res.status(400).json({ msg: "Invalid date format", error: err.message });
-    }
 
-    if (!req.user || !req.user.id) {
-        return res.status(401).json({ msg: "Unauthorized access" });
-    }
+        // ✅ Ensure `disableMultiplePeopleWarning` is stored based on test location
+        const disableMultiplePeopleWarning = test_location === 'classroom';
 
-    try {
         const test = new Test({
-            userId: req.user.id, 
+            userId: req.user.id,
             email,
             test_name,
             test_link_by_user,
             test_code: shortid.generate() + "-" + shortid.generate(),
-            start_time: startTime,
-            end_time: endTime,
+            start_time: new Date(start_time),
+            end_time: new Date(end_time),
             no_of_candidates_appear,
             test_location,
-            total_threshold_warnings: 3,  // ✅ Keep total warnings at 3
-            disableMultiplePeopleWarning: test_location === 'classroom'  // ✅ Disable "Multiple People" Warning in Classroom mode
+            disableMultiplePeopleWarning,  // 🔹 Ensure this field is stored in MongoDB
+            total_threshold_warnings: 3
         });
 
-        test.save((error, data) => {
-            if (error) {
-                return res.status(500).json({ msg: "Something went wrong while creating new test", error });
-            }
-            return res.status(201).json({ msg: "Successfully created new Test on platform", data });
-        });
+        await test.save();
+        return res.status(201).json({ msg: "Test created successfully", test });
+
     } catch (err) {
+        console.error("❌ Error creating test:", err);
         return res.status(500).json({ msg: "Server error", error: err });
     }
 };
@@ -191,11 +226,39 @@ const testAdminData = (req, res) => {
     }
 };
 
+const testTakerDetails = async (req, res) => {
+    try {
+        const { test_code, registrationNumber } = req.params;
+
+        // ✅ Fetch test details including `disableMultiplePeopleWarning`
+        const test = await Test.findOne({ test_code }).select("test_location disableMultiplePeopleWarning warningCount");
+
+        if (!test) {
+            return res.status(404).json({ msg: "Test not found" });
+        }
+
+        console.log("✅ Test Found:", test);  // Debugging log
+
+        return res.status(200).json({
+            testCode: test.test_code,
+            test_location: test.test_location,
+            disableMultiplePeopleWarning: test.disableMultiplePeopleWarning ?? false, // 🔹 Ensure this is always present
+            warningCount: test.warningCount || 0
+        });
+
+    } catch (error) {
+        console.error("❌ Error fetching test details:", error);
+        return res.status(500).json({ msg: "Server error", error });
+    }
+};
+
+
 module.exports = {
     createTest,
     userCreatedTests,
     testRegister,
     testAdminData,
+    testTakerDetails,
     increasePersonDetected,
     increaseVoiceDetected,
     increaseFaceCovering,

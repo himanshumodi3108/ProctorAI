@@ -216,6 +216,16 @@ const Status = () => {
 												>
 													Registration Number
 												</th>
+												{/* <th
+													style={{
+														padding: "10px",
+														borderBottom: "1px solid #ddd",
+														fontWeight: "bold",
+														color: "#007BFF",
+													}}
+												>
+													Total Warnings
+												</th> */}
 											</tr>
 										</thead>
 										<tbody>
@@ -253,6 +263,14 @@ const Status = () => {
 													>
 														{testTaker.registrationNumber}
 													</td>
+													{/* <td
+														style={{
+															padding: "10px",
+															borderBottom: "1px solid #ddd",
+														}}
+													>
+														{testTaker.totalWarningCount}
+													</td> */}
 												</tr>
 											))}
 										</tbody>
