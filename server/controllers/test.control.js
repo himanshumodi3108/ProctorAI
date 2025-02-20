@@ -78,6 +78,11 @@ const createTest = async (req, res) => {
         // ✅ Ensure `disableMultiplePeopleWarning` is stored based on test location
         const disableMultiplePeopleWarning = test_location === 'classroom';
 
+        if (!req.user || !req.user.id) {
+            console.error("User not authenticated or missing user ID");
+            return res.status(401).json({ msg: "Unauthorized access" });
+        }
+
         const test = new Test({
             userId: req.user.id,
             email,
@@ -199,10 +204,12 @@ const userCreatedTests = (req, res) => {
         Test.find({ userId })
             .exec((error, _allTests) => {
                 if (error) return res.status(400).json({ msg: "Something went wrong while fetching user tests", error });
-                return res.status(200).json({ _allTests });
+                if (_allTests) return res.status(200).json({ _allTests });
             });
     } else {
-        return res.status(400).json({ msg: "Check user ID, something is wrong" });
+        return res.status(400).json({ 
+            msg: "Check user ID, something is wrong" 
+        });
     }
 };
 
@@ -210,7 +217,7 @@ const testRegister = async (req, res) => {
     const { test_code } = req.params;
     const userId = req.user.id;
     if (userId) {
-        await User.findOneAndUpdate({ _id: userId }, { test_code });
+        await User.findOneAndUpdate({ _id: userId }, { test_code: test_code });
         res.status(200).json({ msg: "Now you are registered" });
     }
 };
@@ -218,10 +225,10 @@ const testRegister = async (req, res) => {
 const testAdminData = (req, res) => {
     const { test_code } = req.params;
     if (test_code) {
-        User.find({ test_code })
+        User.find({ test_code: test_code })
             .exec((error, candidates) => {
                 if (error) return res.status(400).json({ msg: "Error fetching candidates-status" });
-                return res.status(200).json({ candidates });
+                if (candidates) return res.status(200).json({ candidates });
             });
     }
 };
