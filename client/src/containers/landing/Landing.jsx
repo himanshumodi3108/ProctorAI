@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navbar, CtaButton, CommonInput } from './../../components';
 import axios from 'axios';
 import infinite from './../../assets/infinite.svg';
 import './landing.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
+
 
 const featureList = [
     'Multiple People Detection',
@@ -20,6 +22,15 @@ const Landing = () => {
 	const [registrationNumber, setRegistrationNumber] = useState('');
 	const [email, setEmail] = useState('');
 	const [name, setName] = useState('');
+
+	const navigate = useNavigate();
+  	const isAuthenticated = !!Cookies.get('token');
+
+	useEffect(() => {
+	if (isAuthenticated) {
+		navigate('/dashboard', { replace: true });
+	}
+	}, [navigate, isAuthenticated]);
 
 	const handleJoinClick = () => {
 		if (!testCode.trim()) {

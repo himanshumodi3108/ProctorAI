@@ -21,6 +21,22 @@ const App = () => {
   const isAuthenticated = !!Cookies.get('token'); 
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
+  // Function to handle protected routes
+  const ProtectedRoute = ({ children }) => {
+    if (!isAuthenticated) {
+      return <Navigate to="/login" replace />;
+    }
+    return children;
+  };
+
+  // Function to handle public routes
+  const PublicRoute = ({ children }) => {
+    if (isAuthenticated) {
+      return <Navigate to="/dashboard" replace />;
+    }
+    return children;
+  };
+
   useEffect(() => {
     // Update state on window resize
     const handleResize = () => {
@@ -46,9 +62,28 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           {/* Public routes */}
-          <Route exact path="/" element={<Landing />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
+          <Route exact path="/" element={
+              <PublicRoute>
+                <Landing />
+              </PublicRoute>
+            } 
+          />
+          <Route 
+            path="/register" 
+            element={
+              <PublicRoute>
+                <Register />
+              </PublicRoute>
+            }
+          />
+          <Route 
+            path="/login" 
+            element={
+              <PublicRoute>
+                <Login />
+              </PublicRoute>
+            }
+          />
           <Route path="/exam" element={<Exam />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
@@ -56,15 +91,27 @@ const App = () => {
           {/* Protected routes */}
           <Route 
             path="/dashboard" 
-            element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} 
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            } 
           />
           <Route 
             path="/status" 
-            element={Cookies.get('token') ? <Status /> : <Navigate to="/login" />} 
+            element={
+              <ProtectedRoute>
+                <Status />
+              </ProtectedRoute>
+            } 
           />
           <Route 
             path="/create" 
-            element={Cookies.get('token') ? <Create /> : <Navigate to="/login" />} 
+            element={
+              <ProtectedRoute>
+                <Create />
+              </ProtectedRoute>
+            } 
           />
 
           {/* Catch-all route to redirect if no matching path */}

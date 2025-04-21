@@ -17,6 +17,12 @@ const Login = () => {
 	const location = useLocation();
 
 	useEffect(() => {
+		if (Cookies.get('token')) {
+		  navigate('/dashboard', { replace: true });
+		}
+	}, [navigate]);
+
+	useEffect(() => {
 		const query = new URLSearchParams(location.search);
 		if (query.get('registered') === 'success') {
 			setShowSuccessMessage(true);
