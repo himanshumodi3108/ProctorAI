@@ -68,40 +68,60 @@ const shortid = require('shortid');
 
 
 const createTest = async (req, res) => {
+    const { email, test_name, test_link_by_user, start_time, end_time, no_of_candidates_appear, test_location, total_threshold_warnings } = req.body;
+
+    if (!email || !test_name || !test_link_by_user || !start_time || !end_time || !no_of_candidates_appear || !test_location) {
+        return res.status(400).json({ msg: "Missing required fields" });
+    }
+
+    // ✅ Ensure `disableMultiplePeopleWarning` is stored based on test location
+    const disableMultiplePeopleWarning = test_location === 'classroom';
+
+    let startTime, endTime;
+
     try {
-        const { email, test_name, test_link_by_user, start_time, end_time, no_of_candidates_appear, test_location } = req.body;
-
-        if (!email || !test_name || !test_link_by_user || !start_time || !end_time || !no_of_candidates_appear || !test_location) {
-            return res.status(400).json({ msg: "Missing required fields" });
+        startTime = new Date(start_time);
+        endTime = new Date(end_time);
+        
+        if (isNaN(startTime) || isNaN(endTime)) {
+            throw new Error('Invalid date format');
         }
+    } catch (err) {
+        console.error("Invalid date format:", err);
+        return res.status(400).json({ msg: "Invalid date format", error: err.message });
+    }
 
-        // ✅ Ensure `disableMultiplePeopleWarning` is stored based on test location
-        const disableMultiplePeopleWarning = test_location === 'classroom';
+    if (!req.user || !req.user.id) {
+        console.error("User not authenticated or missing user ID");
+        return res.status(401).json({ msg: "Unauthorized access" });
+    }
 
-        if (!req.user || !req.user.id) {
-            console.error("User not authenticated or missing user ID");
-            return res.status(401).json({ msg: "Unauthorized access" });
-        }
-
+    try {
         const test = new Test({
             userId: req.user.id,
-            email,
-            test_name,
-            test_link_by_user,
+            email: email,
+            test_name: test_name,
+            test_link_by_user: test_link_by_user,
             test_code: shortid.generate() + "-" + shortid.generate(),
-            start_time: new Date(start_time),
-            end_time: new Date(end_time),
-            no_of_candidates_appear,
-            test_location,
+            start_time: startTime,
+            end_time: endTime,
+            no_of_candidates_appear: no_of_candidates_appear,
+            test_location: test_location,
             disableMultiplePeopleWarning,  // 🔹 Ensure this field is stored in MongoDB
-            total_threshold_warnings: 3
+            total_threshold_warnings: total_threshold_warnings || 3,
         });
 
-        await test.save();
-        return res.status(201).json({ msg: "Test created successfully", test });
-
+        test.save((error, data) => {
+            if (error) {
+                console.error("Error saving test:", error); 
+                return res.status(500).json({ msg: "Something went wrong while creating new test", error });
+            }
+            if (data) {
+                return res.status(201).json({ msg: "Successfully created new Test on platform", data });
+            }
+        });
     } catch (err) {
-        console.error("❌ Error creating test:", err);
+        console.error("Unexpected Error:", err); 
         return res.status(500).json({ msg: "Server error", error: err });
     }
 };
@@ -126,7 +146,7 @@ const increasePersonDetected = async (req, res) => {
         // ✅ Increase warning if not in Classroom mode
         await User.findOneAndUpdate({ _id: userId }, { $inc: { person_detected: 1 } });
 
-        res.status(200).json({ msg: "Warning for 'Multiple People Detected' increased" });
+        res.status(200).json({ msg: "Warning for multiple person increased" });
     } catch (error) {
         console.error("Error increasing person detected warning:", error);
         res.status(500).json({ msg: "Server error", error });
@@ -208,7 +228,10 @@ const userCreatedTests = (req, res) => {
             });
     } else {
         return res.status(400).json({ 
-            msg: "Check user ID, something is wrong" 
+            msg: {
+                one: "Check user ID, something wrong with it",
+                two: "Can't pass empty userId"
+            } 
         });
     }
 };
@@ -227,7 +250,7 @@ const testAdminData = (req, res) => {
     if (test_code) {
         User.find({ test_code: test_code })
             .exec((error, candidates) => {
-                if (error) return res.status(400).json({ msg: "Error fetching candidates-status" });
+                if (error) return res.status(400).json({ msg: "Something went wrong while fetching candidates-status" });
                 if (candidates) return res.status(200).json({ candidates });
             });
     }

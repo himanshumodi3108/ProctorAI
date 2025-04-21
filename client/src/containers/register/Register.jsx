@@ -14,7 +14,7 @@ const Register = () => {
 	const [otp, setOtp] = useState('');
 	const [otpSent, setOtpSent] = useState(false);
 	const [isOtpVerified, setIsOtpVerified] = useState(false);
-	const [loading, setLoading] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState('');
 	const [resendTimer, setResendTimer] = useState(0);
 	const navigate = useNavigate();
@@ -52,7 +52,7 @@ const Register = () => {
 		}
 
 		try {
-			setLoading(true);
+			setIsLoading(true);
 			const response = await axios.post('http://localhost:5000/api/send-otp', { email: formData.email });
 
 			if (response.data.success) {
@@ -65,7 +65,7 @@ const Register = () => {
 		} catch (err) {
 			setError('Failed to send OTP. Try again.');
 		}
-		setLoading(false);
+		setIsLoading(false);
 	};
 
 	// 🔹 Verify OTP Function
@@ -76,7 +76,7 @@ const Register = () => {
 		}
 
 		try {
-			setLoading(true);
+			setIsLoading(true);
 			const response = await axios.post('http://localhost:5000/api/verify-otp', {
 				email: formData.email.trim(),
 				otp: otp.trim(),
@@ -93,7 +93,7 @@ const Register = () => {
 		} catch (err) {
 			setError('Invalid OTP. Try again.');
 		}
-		setLoading(false);
+		setIsLoading(false);
 	};
 
 	// 🔹 Register User Function
@@ -119,10 +119,12 @@ const Register = () => {
 			});
 
 			alert('🎉 Registration successful!');
-			navigate('/login');
+			navigate('/login?registered=success');
 		} catch (error) {
 			console.error('❌ Registration failed:', error);
 			setError(error.response?.data?.message || "Something went wrong during registration!");
+			alert('Something went wrong during registration!');
+			setIsLoading(false);
 		}
 	};
 
@@ -130,7 +132,16 @@ const Register = () => {
 		<div className="user-register">
 			<Navbar />
 			<h1 className="title-heading">Register</h1>
-			<div className="register-form">
+			<div className="register-form"
+				style={{
+					padding: '35px',
+					borderRadius: '12px',
+					border: '1px solid #ddd',
+					width: '600px',
+					boxShadow: '0px 5px 15px rgba(0, 0, 0, 0.1)',
+				}}
+			>
+
 				<form className="input-fields" onSubmit={handleSubmit}>
 					{/* Full Name Input */}
 					<div className="input-group">
@@ -150,6 +161,7 @@ const Register = () => {
 								fontFamily: "'Poppins', sans-serif",
 								outline: 'none',
 							}}
+							disabled={isLoading}
 						/>
 					</div>
 
@@ -235,12 +247,42 @@ const Register = () => {
 											fontFamily: "'Poppins', sans-serif",
 											outline: 'none',
 										}}
+										disabled={isLoading}
 									/>
 								</div>
 							</div>
 
 						{/* Register Button  */}
-							<CtaButton text="Register" type="submit" disabled={!isOtpVerified} />
+							{/* <CtaButton text="Register" type="submit" disabled={!isOtpVerified} /> */}
+							<div style={{ position: 'relative' }}>
+								<CtaButton
+									text={isLoading ? "Registering..." : "Register"}
+									type="submit"
+									style={{
+										width: '100%',
+										padding: '12px',
+										fontSize: '16px',
+										fontWeight: 'bold',
+										borderRadius: '8px',
+										fontFamily: "'Poppins', sans-serif",
+									}}
+									disabled={!isOtpVerified}
+								/>
+								{isLoading && (
+									<div className="spinner" style={{
+										width: '20px',
+										height: '20px',
+										border: '3px solid rgba(0, 0, 0, 0.1)',
+										borderRadius: '50%',
+										borderTop: '3px solid #007BFF',
+										animation: 'spin 1s linear infinite',
+										position: 'absolute',
+										right: '-30px',
+										top: '50%',
+										transform: 'translateY(-50%)'
+									}}></div>
+								)}
+							</div>
 						</div>
 					)}
 
@@ -268,6 +310,14 @@ const Register = () => {
 					</span>
 				</p>
 			</div>
+			<style>
+				{`
+					@keyframes spin {
+						0% { transform: rotate(0deg); }
+						100% { transform: rotate(360deg); }
+					}
+				`}
+			</style>
 		</div>
 	);
 };

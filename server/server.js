@@ -12,8 +12,10 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: 'http://localhost:3000', 
-    credentials: true, 
+    origin: 'http://localhost:3000', // Your frontend URL
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true, // Make sure credentials are included (cookies, etc.)
+    allowedHeaders: ['Content-Type', 'Authorization'], // Allow Authorization header
   })
 );
 app.use(express.json());
@@ -71,10 +73,10 @@ const testTakerSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  totalWarningCount: { 
-    type: Number, 
-    default: 0 
-  }
+  // totalWarningCount: { 
+  //   type: Number, 
+  //   default: 0 
+  // }
 });
 
 // Remove unique index from MongoDB (if previously set)
@@ -234,7 +236,7 @@ app.put(
       testTaker.warningCount = warningCount;
 
       // Increment the totalWarningCount
-      testTaker.totalWarningCount++;
+      // testTaker.totalWarningCount++;
 
       // Save the updated test taker
       await testTaker.save();

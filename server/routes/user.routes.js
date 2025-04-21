@@ -4,6 +4,10 @@ const router = express.Router();
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const OTP = require('../models/otp.model'); // Import OTP Model
+const multer = require('multer')
+const shortid = require('shortid')
+const path = require('path');
+const { requireSignIn } = require('../middlewares');
 
 // 🔹 Send OTP & Store in MongoDB
 router.post('/send-otp', async (req, res) => {
@@ -147,10 +151,18 @@ router.post('/register', async (req, res, next) => {
     }
 }, register);
 
-
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, path.join(path.dirname(__dirname), 'uploads'))
+    },
+    filename: function (req, file, cb) {
+        cb(null, shortid.generate() + '-' + file.originalname)
+    }
+})
+const upload = multer({ storage });
 
 
 router.post('/signin', signIn);
-router.post('/signout', signOut);
+router.post('/signout', requireSignIn, signOut);
 
 module.exports = router;

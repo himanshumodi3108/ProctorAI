@@ -58,21 +58,21 @@ const Exam = ({ examName = '', formLink = '' }) => {
   const fetchExamDetails = async () => {
     try {
         const response = await axios.get(`http://localhost:5000/api/test-taker/${test_code}/${registration_number}`);
-        console.log("🔹 Full Test Details Response:", response.data);
+        // console.log("🔹 Full Test Details Response:", response.data);
+        const examData1 = response.data;
+        if (examData1) {
+            setDetails(examData1);
+            setWarningCnt(examData1.warningCount);
 
-        if (response.data) {
-            setDetails(response.data);
-            setWarningCnt(response.data.warningCount);
-
-            if (response.data.hasOwnProperty("disableMultiplePeopleWarning")) {
-                console.log("✅ disableMultiplePeopleWarning received:", response.data.disableMultiplePeopleWarning);
-                setDisableMultiplePeopleWarning(response.data.disableMultiplePeopleWarning);
+            if (examData1.hasOwnProperty("disableMultiplePeopleWarning")) {
+                console.log("✅ disableMultiplePeopleWarning received:", examData1.disableMultiplePeopleWarning);
+                setDisableMultiplePeopleWarning(examData1.disableMultiplePeopleWarning);
             } else {
                 console.error("❌ disableMultiplePeopleWarning is missing from API response");
             }
 
-            if (response.data.warningCount > 3) {
-                terminateExam();
+            if (examData1.warningCount > 3) {
+                terminateexam();
             }
         }
     } catch (error) {
